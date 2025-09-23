@@ -67,7 +67,8 @@ Apakah ada feedback untuk asisten dosen tutorial 1 yang telah kamu kerjakan sebe
 
 
 
-Tugas 2
+Tugas 3
+
 Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
     Karena data delivery dapat memastikan data yang benar dan dibutuhkan dapat diakses oleh pengguna atau sistem yang tepat, pada waktu yang tepat sehingga sebuah aplikasi dapat beroperasi secara optimal
 
@@ -112,3 +113,23 @@ SCREENSHOT POSTMAN
 ![Bukti JSON_by_ID](Postman_JSON_ID.png)
 
 *** Mengakses keempat URL di poin 2 menggunakan Postman, membuat screenshot dari hasil akses URL pada Postman, dan menambahkannya ke dalam README.md. --DONE ***
+
+
+
+
+Tugas 4
+Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.
+
+Apa perbedaan antara autentikasi dan otorisasi? Bagaiamana Django mengimplementasikan kedua konsep tersebut?
+
+Apa saja kelebihan dan kekurangan session dan cookies dalam konteks menyimpan state di aplikasi web?
+
+Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut?
+
+Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+-Buat ketiga function
+-Sambungkan ke urls
+-buat htmlnya
+-memuat data dari cookies di views agar diperlukan
+-manghubungkan product dengan user
+-mengedit main.html untuk menunjukkan tombol logout, sesi, dan filter
