@@ -119,17 +119,42 @@ SCREENSHOT POSTMAN
 
 Tugas 4
 Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.
+    AuthenticationForm merupakan sebuah fitur dari django yang menyediakan html untuk login yang secara otomatis menangani validasi pengguna dan otentikasi pengguna.
+
+    Kelebihan dari AuthenticationForm dari django ini merupakan kemudahannya untuk di implementasikan dan tidak menghabiskan waktu yang lama untuk pengembangkannya. Tidak hanya itu, keamanannya juga terjamin dan memiliki validasi otomatis yang akan muncul jika salah yang mengeluarkan pesan kesalahan sehingga tidak perlu membuat kode tambahan.
+
+    Kekurangan dari AuthenticationForm ini yaitu kurang fleksibel jika ingin menambahkan modifikasi sehingga harus membuat form baru yang harus dimodifikasi sendiri. Kekurangannya juga jika kita ingin mengimplementasikan suatu hal yang lebih kompleks akan membutuhkan library lain dan membuat implementasi yang khusus. 
 
 Apa perbedaan antara autentikasi dan otorisasi? Bagaiamana Django mengimplementasikan kedua konsep tersebut?
+    Perbedaannya yaitu autentikasi digunakan untuk memvalidasi pengguna dan otorisasi untuk ijin yang diberikan pengguna untuk melakukan suatu aksi dalam aplikasi. misalnya, setelah login sebagai pengunjung, kita hanya dapat melakukan pembelian dan tidak dapat menghapus item tersebut dari aplikasi yang hanya dapat dilakukan oleh admin dan penjual.
+
+    Cara django mengimplementasikan kedua hal tersebut yaitu dengan sebuah fitur bawaan yang dapat dilakukan dengan django.contrib.auth untuk autentikasi django akan mengautentikasi pengguna terhadap data yang tersimpan di database. Kalau cocok, pengguna dianggap terautentikasi, dan django akan membuat sesi untuknya.
+    
+    Cara django mengimplementasikan atorisasi yaitu dengan django.contrib.auth yang dapat implementasinya dapat dilakukan dengan beberapa hal seperti dekorator (seperti yang digunakan di tutorial dan tugas yaitu @login_required), permissions, dan group.
 
 Apa saja kelebihan dan kekurangan session dan cookies dalam konteks menyimpan state di aplikasi web?
+    Session
+    Kelebihan dari session yaitu data sensitif tidak akan disimpan dalam website sehingga mengurangi risiko pencurian data. Tidak hanya itu, session tidak memiliki batas data yang dapat disimpan karena data ada di dalam server serta pengembang memiliki kontrol penuh terhadap data sesi dan durasi berlakunya.
+    Kekurangannya yaitu setiap sesi memerlukan penyimpanan dari server yang dapat menjadi beban terutama jika banyak pengguna. Kekurangannya juga jika dalam lingkungan yang kompleks akan menjadi lebih susah untuk mengelola data dari sesi yang disimpan.
+
+    Cookies
+    Kelebihan dari cookies yaitu implementasinya cukup mudah dan terutama untuk menyimpan data non-sensitif dan kecil. Kelebihan dari cookies juga yaitu server tidak perlu menyimpan state di sisi server untuk setiap pengguna ketika mengimplementasikan cookies.
+    Kekurangan dari cookies yaitu data yang disimpan cukup kecil dan pengguna dapat menghapus cookie secara manual yang akan menghilangkan state yang tersimpan. Tidak hanya itu, cookies juga memiliki kekurangan jika ada banyak request, cookie akan dikirimkan kembali ke server yang dapat menjadi overhead pada jaringan serta data cookies dapat dicuri jika terkena serangan di sisi client.
 
 Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut?
+    Penggunaan cookies tidak aman secara default dalam pengembangan web karena ada beberapa risiko terutama karena cookies disimpan di client. Risiko ada beberapa seperti pencurian cookies sehingga penyerang dapat menggunakan cookies client untuk meniru client dan mengakses akun mereka. Cookies juga dapat dimanipulasi sehingga dapat menyebabkan pelanggaran keamanan dan perilaku aplikasi dapat menjadi tidak terduga. Cookies juga memiliki risiko dapat diakses oleh pihak ketiga yang berada di jaringan yang sama jika data tidak di enkripsi. Cara django menghadapi hal tersebut yaitu dengan melakukan enkripsi sesi yang dengan cara menyimpan ID sesi yang unik di cookie pengguna sehingga dapat mencegah pencurian atau manipulasi data sensitif. Django juga melakukan manajemen sesi sehingga memungkinkan untuk mengatur durasi sesi dan menghapus sesi saat pengguna logout.
 
 Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
--Buat ketiga function
--Sambungkan ke urls
--buat htmlnya
--memuat data dari cookies di views agar diperlukan
--manghubungkan product dengan user
--mengedit main.html untuk menunjukkan tombol logout, sesi, dan filter
+    Pertama, saya membuat function register, login_user, dan logout_user yang akan mereturn ke halaman html dan akan menghapus cookie sebelum di kirim ke halaman login untuk function logout_user. Di login_user, nanti akan menyimpan cookie bernama last_login.
+    Kedua, Saya membuat halaman html untuk register dan login lalu menyambungkan html dengan views dengan cara menambahkan path di urls.
+
+*** Mengimplementasikan fungsi registrasi, login, dan logout untuk memungkinkan pengguna mengakses aplikasi sebelumnya sesuai dengan status login/logoutnya. -DONE ***
+
+    Ketiga, saya memasukkan dekorator di views untuk show_main dan shows_item agar harus login dulu agar dapat diakses, di show_main juga saya menambahkan di context yang meminta cookie kapan login terakhir dan meminta user yang sedang login. Lalu, saya mengedit main.html dengan menambahkan waktu last_login kapan, tombol logout, dan juga delete (masih belum ada implementasi), dan nama user yang sedang login.
+
+*** Menampilkan detail informasi pengguna yang sedang logged in seperti username dan menerapkan cookies seperti last_login pada halaman utama aplikasi. -DONE ***
+
+    Keempat, saya menyambungkan product dengan user dengan mengedit models dengan menambahkan user agar akan ada relationship antara item dengan user. Lalu saya mengedit create_news yang akan meminta user dan show_main yang akan memiliki opsi filter (Filter di sini yaitu item yang di buat oleh user tersebut) di halaman utama. Saya mengedit halaman utama untuk menunjukkan tombol filter dan mengedit item_detail.html yang akan menunjukkan nama user di halaman paling bawah.
+
+*** Membuat dua (2) akun pengguna dengan masing-masing tiga (3) dummy data menggunakan model yang telah dibuat sebelumnya untuk setiap akun di lokal. -DONE ***
+***  Menghubungkan model Product dengan User. -DONE ***
