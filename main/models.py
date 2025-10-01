@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class Product(models.Model):
@@ -17,6 +18,9 @@ class Product(models.Model):
     price = models.IntegerField()
     description = models.TextField()
     thumbnail = models.URLField(blank=True, null=True)
+    thumbnail_custom = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     is_featured = models.BooleanField(default=False)
     item_views = models.PositiveIntegerField(default=0)
@@ -32,3 +36,9 @@ class Product(models.Model):
     def increment_views(self):
         self.item_views += 1
         self.save()
+        
+    def choose_one(self):
+        if self.thumbnail and self.thumbnail_custom:
+            raise ValidationError("Choose url image or local image")
+        if not self.thumbnail and not self.thumbnail_custom:
+            raise ValidationError("You need to upload an image")

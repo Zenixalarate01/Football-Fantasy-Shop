@@ -158,3 +158,44 @@ Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-b
 
 *** Membuat dua (2) akun pengguna dengan masing-masing tiga (3) dummy data menggunakan model yang telah dibuat sebelumnya untuk setiap akun di lokal. -DONE ***
 ***  Menghubungkan model Product dengan User. -DONE ***
+
+Tugas 5
+Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+    Urutan dari tertinggi ke terendah:
+    1. Deklarasi yang menggunakan !important akan menimpa segalanya
+    2. Inline styles yang ditulis langsung pada atribut style elemen HTML
+    3. Spesifisitas selector seperti ID selector, class, attribute, pseudo-class selector, tipe dan pseudo-element Selector
+    4. urutan di source codenya dimana jika dua aturan memiliki spesifisitas yang sama persis, aturan yang paling akhir muncul dalam stylesheet akan diterapkan
+    5. CSS bawaan browser yang merupakan aturan default dari browser yang dipakai
+
+Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
+    Karena mayoritas pengguna internet saat ini mengakses web melalui perangkat mobile sehingga jika tidak responsif maka akan kehilangan pengguna. Tidak hanya itu, mesin seperti google dan lainnya memprioritaskan situs yang mobile-friendly dalam hasil pencarian mereka dan memastikan tampilan, branding, dan fungsionalitas aplikasi tetap sama. Contohnya Netflix yang dapat diakses secara web, di desktop, dan di mobile
+
+Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+    -margin merupakan jarak antara border elemen dan elemen-elemen lain di sekitarnya.
+    -border merupakan garis bingkai yang mengelilingi konten dan padding.
+    -padding merupakan jarak internal antara konten elemen dan border-nya
+    cara kerja:
+    -padding: padding: 20px; -> berarti semua sisi berukuran 20 pixel
+    -border: border: 2px solid red -> berarti semua sisi memiliki tebal 2px, gaya garis solid, dan warna merah
+    -margin: margin: 10px auto -> berarti Atas/Bawah 10px Kanan/Kiri auto
+
+Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+    Flexbox merupakan sistem tata letak satu dimensi yang berfokus pada pengaturan elemen hanya dalam satu baris atau satu kolom pada satu waktu.Flexbox biasanya digunakan untuk  menata elemen-elemen kecil dalam satu dimensi seperti navigasi bar
+
+    Grid merupakan sistem tata letak dua dimensi sehingga memungkinkan untuk menyusun elemen secara bersamaan dalam baris dan kolom , menciptakan struktur seperti spreadsheet. Grid berguna untuk menata area besar dan kompleks pada halaman web
+
+Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+-tambahkan di setting (middleware:white noise dan static dirs)
+-bikin function edit & delete, lalu hubungkan ke urls dan tambahkan di main.html
+*** Implementasikan fungsi untuk menghapus dan mengedit product. -DONE ***
+-tambah tailwind ke aplikasi (ada di base)
+-buat navbar di root templates
+-buat global.css di static lalu sambungkan ke base
+-memasukkan custom font ke global.css
+-menambahkan beberapa folder ke static seperti font dan images
+-membuat styling untuk seluruh template agar terlihat lebih rapih (Akan masih ada banyak perubahan) dan dinamis agar kelihatan rapih di mobile
+*** Kustomisasi halaman login, register, tambah product, edit product, dan detail product semenarik mungkin. -DONE ***
+*** Kustomisasi halaman daftar product menjadi lebih menarik dan responsive dan perhatikan kondisi -DONE ***
+***  Untuk setiap card product, buatlah dua buah button untuk mengedit dan menghapus product pada card tersebut! -DONE ***
+*** Buatlah navigation bar (navbar) untuk fitur-fitur pada aplikasi yang responsive terhadap perbedaan ukuran device, khususnya mobile dan desktop. -DONE ***

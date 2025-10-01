@@ -1,32 +1,61 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block meta %}
 <title>Login</title>
 {% endblock meta %}
 
 {% block content %}
-<div class="login">
-  <h1>Login</h1>
+<div class="relative w-full min-h-screen flex">
 
-  <form method="POST" action="">
-    {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-      <tr>
-        <td></td>
-        <td><input class="btn login_btn" type="submit" value="Login" /></td>
-      </tr>
-    </table>
-  </form>
+  <!-- Full background image -->
+  <div class="absolute inset-0">
+    <img src="{% static 'images/login.jpg' %}" alt="Background" class="w-full h-full object-cover">
+    <div class="absolute inset-0 bg-black bg-opacity-25"></div>
+  </div>
 
-  {% if messages %}
-  <ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %} Don't have an account yet?
-  <a href="{% url 'main:register' %}">Register Now</a>
+  <!-- Right side login panel -->
+  <div class="relative z-10 w-full md:w-2/5 h-full flex items-center justify-center ml-auto p-8">
+    <div class="w-full max-w-md bg-white/70 backdrop-blur-md rounded-xl shadow-xl border border-gray-200 p-6 sm:p-8">
+
+      <div class="text-center mb-8">
+        <h1 class="text-5xl font-bold font-byte text-gray-900 mb-2">Sign In</h1>
+        <p class="text-xl font-custom1 text-gray-600">Welcome back champions!</p>
+      </div>
+
+      <!-- Form -->
+      <form method="POST" action="" class="space-y-6">
+        {% csrf_token %}
+        <div>
+          <label for="username" class="block text-sm font-medium text-gray-700 mb-2 font-custom1">Username</label>
+          <input id="username" name="username" type="text" required
+                 class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-green-500 transition-colors"
+                 placeholder="Enter your username">
+        </div>
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-2 font-custom1">Password</label>
+          <input id="password" name="password" type="password" required
+                 class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-green-500 transition-colors"
+                 placeholder="Enter your password">
+        </div>
+        <button type="submit"
+                class="w-full bg-green-600 text-white font-byte text-2xl py-3 px-4 rounded-md hover:bg-green-700 transition-colors">
+          Sign In
+        </button>
+      </form>
+
+      <!-- Register Link -->
+      <div class="mt-6 text-center pt-6 border-t border-gray-200">
+        <p class="text-gray-500 text-lg font-custom1">
+          New around here? 
+          <a href="{% url 'main:register' %}" style="color: #6257b0" class="hover:text-green-700 font-bold text-lg font-custom1">
+            Register Now
+          </a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
 </div>
-
 {% endblock content %}

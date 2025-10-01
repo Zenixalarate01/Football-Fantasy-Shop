@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
+
+.form-style form input, form textarea, form select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid #bcbcbc;
+    border-radius: 0.375rem;
+}
+.form-style form input:focus, form textarea:focus, form select:focus {
+    outline: none;
+    border-color: #8395bd;
+    box-shadow: 0 0 0 3px #586bb1;
+}
+
+.form-style input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0;
+    border: 2px solid #b9babb;
+    border-radius: 0.375rem;
+    background-color: white;
+    cursor: pointer;
+    position: relative;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.form-style input[type="checkbox"]:checked {
+    background-color: #6257b0;
+    border-color: #000000;
+}
+
+.form-style input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-size: 0.875rem;
+}
+
+.form-style input[type="checkbox"]:focus {
+    outline: none;
+    border-color: #4e468e;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+@font-face {
+    font-family: 'Custom_1';
+    src: url('/static/fonts/LowresPixel.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Custom_2';
+    src: url('/static/fonts/ByteBounce.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-size: 20;
+}
+
+.font-custom1 {
+    font-family: 'Custom_1', sans-serif;
+}
+
+.font-byte {
+    font-family: 'Custom_2', sans-serif;
+}

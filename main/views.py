@@ -30,7 +30,7 @@ def show_main(request):
     return render(request, "main.html", context)
 
 def create_item(request):
-    form = Item_Form(request.POST or None)
+    form = Item_Form(request.POST or None, request.FILES or None)
     
     if form.is_valid() and request.method == "POST":
         item_entry = form.save(commit = False)
@@ -67,8 +67,8 @@ def show_xml_by_id(request, item_id):
        return HttpResponse(status=404)
  
 def show_json(request):
-    news_list = Product.objects.all()
-    json_data = serializers.serialize("json", news_list)
+    item_list = Product.objects.all()
+    json_data = serializers.serialize("json", item_list)
     return HttpResponse(json_data, content_type="application/json")
 
 def show_json_by_id(request, item_id):
@@ -113,3 +113,21 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+def edit_item(request, id):
+    item = get_object_or_404(Product, pk=id)
+    form = Item_Form(request.POST or None, request.FILES or None, instance=item)
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        return redirect('main:show_main')
+
+    context = {
+        'form': form
+    }
+
+    return render(request, "edit_item.html", context)
+
+def delete_item(request, id):
+    item = get_object_or_404(Product, pk=id)
+    item.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
