@@ -6,18 +6,28 @@
 {% endblock meta %}
 
 {% block content %}
-<div class="bg-gray-50 w-full min-h-screen">
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    
+<div class="relative w-full min-h-screen overflow-hidden">
+
+  <!-- Background -->
+  <div class="absolute inset-0">
+    <img src="{% static 'images/bg_create.png' %}" alt="Background" class="w-full h-full object-cover opacity-40">
+  </div>
+
+  <div class="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
     <!-- Back Navigation -->
     <div class="mb-6">
-      <a href="{% url 'main:show_main' %}" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
-        ← Back to Home
+      <a href="{% url 'main:show_main' %}" 
+        class="font-custom1 fixed top-24 left-6 z-50 flex items-center space-x-2 bg-white/80 backdrop-blur-md text-[#4b4197] hover:bg-[#4b4197] hover:text-white transition-all px-4 py-2 rounded-full shadow-md font-medium">
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        <span>Back to Home</span>
       </a>
     </div>
     
     <!-- Form -->
-    <div class="bg-white rounded-lg border border-gray-200 p-6 sm:p-8 form-style">
+    <div class="rounded-lg border border-gray-200 p-6 sm:p-8 form-style font-custom1 bg-[#f1e6ff]/70 shadow-2xl relative z-10">
       <div class="mb-8">
         <h1 class="text-2xl font-bold text-gray-900 mb-2">Edit Item</h1>
         <p class="text-gray-600">Update your Item</p>
@@ -43,10 +53,10 @@
         {% endfor %}
         
         <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
-          <a href="{% url 'main:show_main' %}" class="order-2 sm:order-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-md font-medium hover:bg-gray-50 transition-colors text-center">
+          <a href="{% url 'main:show_main' %}" class="order-2 sm:order-1 px-6 py-3 border border-gray-300 text-white rounded-md font-medium bg-red-600 hover:bg-red-700 transition-colors text-center">
             Cancel
           </a>
-          <button type="submit" class="order-1 sm:order-2 flex-1 bg-green-600 text-white px-6 py-3 rounded-md font-medium hover:bg-green-700 transition-colors">
+          <button type="submit" class="order-1 sm:order-2 flex-1 bg-[#53499a] text-white px-6 py-3 rounded-md font-medium hover:bg-[#4b4197] transition-colors">
             Update Item
           </button>
         </div>

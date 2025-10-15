@@ -1,29 +1,37 @@
 {% load static %}
-<article class="bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+<div class="bg-[#f1e6ff]/75 rounded-lg border-gray-200 overflow-hidden hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out">
   <!-- Thumbnail -->
   <div class="aspect-[16/9] relative overflow-hidden">
     {% if item.thumbnail %}
-      <img src="{{ item.thumbnail }}" alt="{{ item.title }}" class="w-full h-full object-cover">
+    <a href="{% url 'main:show_items' item.id %}" class="block w-full h-full">
+      <img src="{{ item.thumbnail }}" alt="{{ item.name }}" class="w-full h-full object-cover">
+    </a>
+    {% elif item.thumbnail_custom %}
+    <a href="{% url 'main:show_items' item.id %}" class="block w-full h-full">
+      <img href="{% url 'main:show_items' item.id %}" src="{{ item.thumbnail_custom.url }}" alt="{{ item.name }}" class="w-full h-full object-cover">
+    </a>
     {% else %}
+    <a href="{% url 'main:show_items' item.id %}" class="block w-full h-full"
       <div class="w-full h-full bg-gray-200"></div>
+    </a>
     {% endif %}
 
-    <!-- Category Badge -->
+    <!-- Category -->
     <div class="absolute top-3 left-3">
-      <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-600 text-white">
+      <span class="font-custom1 inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-purple-100 text-purple-800">
         {{ item.get_category_display }}
       </span>
     </div>
 
-    <!-- Status Badges -->
+    <!-- Status -->
     <div class="absolute top-3 right-3 flex space-x-2">
       {% if item.is_featured %}
-        <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+        <span class="font-custom1 inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
           Featured
         </span>
       {% endif %}
       {% if item.is_item_hot %}
-        <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-red-100 text-red-800">
+        <span class="font-custom1 inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-red-100 text-red-800">
           Hot
         </span>
       {% endif %}
@@ -32,7 +40,7 @@
 
   <!-- Content -->
   <div class="p-5">
-    <div class="flex items-center text-sm text-gray-500 mb-3">
+    <div class="flex items-center text-sm text-gray-500 mb-3 font-custom1">
       <time datetime="{{ item.created_at|date:'c' }}">
         {{ item.created_at|date:"M j, Y" }}
       </time>
@@ -40,37 +48,41 @@
       <span>{{ item.item_views }} views</span>
     </div>
 
-    <h3 class="text-lg font-semibold text-gray-900 mb-3 line-clamp-2 leading-tight">
-      <a href="{% url 'main:show_items' item.id %}" class="hover:text-green-600 transition-colors">
-        {{ item.title }}
-      </a>
+    <h3 class="text-lg font-semibold text-gray-900 line-clamp-2 leading-tight font-custom1">
+        {{ item.name }}
     </h3>
 
-    <p class="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-4">
-      {{ item.content|truncatewords:20 }}
+    <!-- Short Description -->
+    <p class="font-custom1 text-gray-600 text-sm leading-relaxed line-clamp-3 mb-2">
+      {{ item.description|truncatewords:20 }}
     </p>
 
-    <!-- Action Buttons -->
+    <!-- Price -->
+    <p class="text-green-600 font-bold text-lg font-custom1 mb-4">
+      ${{ item.price }}
+    </p>
+
+    <!-- Button -->
     {% if user.is_authenticated and item.user == user %}
       <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-        <a href="{% url 'main:show_items' item.id %}" class="text-green-600 hover:text-green-700 font-medium text-sm transition-colors">
-          Read more
+        <a href="{% url 'main:show_items' item.id %}" class="text-[#4b4197] hover:text-[#3b347d] font-medium text-lg transition-colors font-custom1">
+          See more
         </a>
         <div class="flex space-x-2">
-          <a href="{% url 'main:edit_item' item.id %}" class="text-gray-600 hover:text-gray-700 text-sm transition-colors">
+          <a href="{% url 'main:edit_item' item.id %}" class="text-gray-600 hover:text-gray-700 text-sm transition-colors font-custom1">
             Edit
           </a>
-          <a href="{% url 'main:delete_item' item.id %}" class="text-red-600 hover:text-red-700 text-sm transition-colors">
+          <a href="{% url 'main:delete_item' item.id %}" class="text-red-600 hover:text-red-700 text-sm transition-colors font-custom1">
             Delete
           </a>
         </div>
       </div>
     {% else %}
       <div class="pt-4 border-t border-gray-100">
-        <a href="{% url 'main:show_items' item.id %}" class="text-green-600 hover:text-green-700 font-medium text-sm transition-colors">
-          Description →
+        <a href="{% url 'main:show_items' item.id %}" class="text-[#4b4197] hover:text-[#3b347d] font-medium text-lg transition-colors font-custom1">
+          See more
         </a>
       </div>
     {% endif %}
   </div>
-</article>
+</div>

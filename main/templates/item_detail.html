@@ -2,87 +2,265 @@
 {% load static %}
 
 {% block meta %}
-<title>{{ item.title }} - Fantasy Football</title>
+<title>{{ item.name }} - Fantasy Football</title>
 {% endblock meta %}
 
 {% block content %}
-<div class="bg-gray-50 w-full min-h-screen">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
-        <!-- Back Navigation -->
-        <div class="mb-6">
-            <a href="{% url 'main:show_main' %}" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
-                ← Back to Home
-            </a>
-        </div>
-        
-        <!-- Article -->
-        <article class="bg-white rounded-lg border border-gray-200 overflow-hidden">
-            
-            <!-- Header -->
-            <div class="p-6 sm:p-8">
-                <div class="flex flex-wrap items-center gap-2 mb-4">
-                    <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-green-600 text-white">
-                        {{ item.get_category_display }}
-                    </span>
-                    {% if item.is_featured %}
-                        <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-yellow-100 text-yellow-800">
-                            Featured
-                        </span>
-                    {% endif %}
-                    {% if item.is_item_hot %}
-                        <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-red-100 text-red-800">
-                            Hot
-                        </span>
-                    {% endif %}
-                </div>
-                
-                <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-4">
-                    {{ item.title }}
-                </h1>
-                
-                <div class="flex flex-wrap items-center text-sm text-gray-500 gap-4">
-                    <time datetime="{{ item.created_at|date:'c' }}">
-                        {{ item.created_at|date:"M j, Y g:i A" }}
-                    </time>
-                    <span>{{ item.item_views }} views</span>
-                </div>
-            </div>
+{% include 'navbar.html' %}
+{% include 'edit_modal.html' %}
 
-            <!-- Featured Image -->
-            {% if item.thumbnail %}
-                <div class="px-6 sm:px-8">
-                    <img src="{{ item.thumbnail }}" 
-                         alt="{{ item.title }}" 
-                         class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">
-                </div>
-            {% endif %}
+<div class="relative w-full min-h-screen flex justify-center items-start pt-24">
 
-            <!-- Content -->
-            <div class="p-6 sm:p-8">
-                <div class="prose prose-lg max-w-none">
-                    <div class="text-gray-700 leading-relaxed whitespace-pre-line text-base sm:text-lg">
-                        {{ item.content }}
-                    </div>
-                </div>
-            </div>
+  <div class="absolute inset-0 z-10">
+    <img src="{% static 'images/bg_main.png' %}" alt="Background" class="w-full h-full object-cover">
+    <div class="absolute inset-0 bg-black/30"></div>
+  </div>
 
-            <!-- Author Info -->
-            <div class="border-t border-gray-200 p-6 sm:p-8 bg-gray-50">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <div class="font-medium text-gray-900">
-                            {% if item.user %}
-                                <p>Author: {{ item.user.username }}</p>
-                            {% else %}
-                                <p>Author: Anonymous</p>
-                            {% endif %}
-                        </div>
-                        <p class="text-sm text-gray-500">Author</p>
-                    </div>
-                </div>
-            </div>
-        </article>
+  <div id="item-detail-container" class="relative z-20 bg-[#f1e6ff]/70 shadow-2xl rounded-3xl w-full max-w-7xl flex flex-col md:flex-row overflow-hidden mt-10 mb-16 h-[90vh]">
+    
+    <div id="loading-state" class="w-full h-[90vh] flex items-center justify-center text-[#4b4197] text-lg font-custom1">
+      <p>Loading item details...</p>
     </div>
+
+    <div id="error-state" class="hidden w-full h-[90vh] flex items-center justify-center text-red-600 text-lg font-custom1">
+      Failed to load item details. Please try again.
+    </div>
+
+    <div id="item-content" class="hidden w-full flex flex-col md:flex-row h-full">
+      
+      <a href="{% url 'main:show_main' %}" class="font-custom1 fixed top-24 left-6 z-50 flex items-center space-x-2 bg-white/80 backdrop-blur-md text-[#4b4197] hover:bg-[#4b4197] hover:text-white transition-all px-4 py-2 rounded-full shadow-md font-medium">
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        <span>Back</span>
+      </a>
+
+      <div class="w-full md:w-1/2 h-full flex justify-center items-center p-6">
+        <div class="relative w-full h-full flex items-center justify-center">
+          <img id="item-image" src="" alt="Item Image" class="rounded-2xl shadow-lg max-w-full max-h-full object-contain hidden">
+          <div id="no-image" class="rounded-2xl w-full h-full bg-gray-200 flex items-center justify-center text-gray-500 text-lg hidden">No Image Available</div>
+        </div>
+      </div>
+
+      <div class="w-full md:w-1/2 flex flex-col p-8 overflow-y-auto">
+        <h1 id="item-title" class="text-3xl md:text-4xl font-bold font-custom1 text-gray-900 mb-2"></h1>
+        <div class="border-t border-gray-200 pt-4 mb-2"><p id="item-seller" class="text-sm text-gray-600 font-custom1 mb-1"></p></div>
+        <div id="item-badges" class="flex flex-wrap items-center gap-3 mb-7"></div>
+
+        <div class="flex flex-col gap-4 mb-6">
+          <div>
+            <span class="text-2xl font-semibold text-gray-900 font-custom1">Price: </span>
+            <span id="item-price" class="text-3xl font-bold text-green-600 font-custom1"></span>
+          </div>
+          <div id="action-buttons-container" class="flex items-center gap-4"></div>
+        </div>
+
+        <div class="border-t border-gray-200 pt-4 flex-grow flex flex-col">
+          <h2 class="text-xl font-bold text-gray-900 font-custom1 mb-3">Description</h2>
+          <p id="item-description" class="text-gray-700 leading-relaxed text-base whitespace-pre-line font-custom1 flex-grow"></p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+{% include 'modal.html' %} 
+
+<div id="deleteModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+  <div class="bg-white rounded-lg shadow-lg p-6 w-80 text-center">
+    <h3 class="text-lg font-semibold text-gray-900 mb-4 font-custom1">Are you sure?</h3>
+    <p class="text-gray-600 mb-6 font-custom1">This item will be permanently deleted.</p>
+    <div class="flex justify-center space-x-4">
+      <button id="cancelDelete" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md font-custom1 hover:bg-gray-400 transition">Cancel</button>
+      <button id="confirmDelete" class="px-4 py-2 bg-red-600 text-white rounded-md font-custom1 hover:bg-red-700 transition w-24 flex justify-center items-center">
+        <span id="delete-button-text">Delete</span>
+        <svg id="delete-button-spinner" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+{% block script %}
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const ITEM_ID = "{{ item.id }}";
+  const ITEM_ENDPOINT = `{% url 'main:show_json_by_id' item.id %}`;
+  const DELETE_ITEM_ENDPOINT_BASE = `{% url 'main:delete_item' '00000000-0000-0000-0000-000000000000' %}`;
+  const EDIT_ITEM_URL_BASE = `{% url 'main:edit_item' '00000000-0000-0000-0000-000000000000' %}`;
+  const CURRENT_USER_ID = "{{ user.id|default_if_none:'' }}";
+
+  const loadingState = document.getElementById("loading-state");
+  const errorState = document.getElementById("error-state");
+  const content = document.getElementById("item-content");
+  const actionButtonsContainer = document.getElementById("action-buttons-container");
+  
+  const itemTitle = document.getElementById("item-title");
+  const itemSeller = document.getElementById("item-seller");
+  const itemPrice = document.getElementById("item-price");
+  const itemDescription = document.getElementById("item-description");
+  const itemImage = document.getElementById("item-image");
+  const noImage = document.getElementById("no-image");
+  const itemBadges = document.getElementById("item-badges");
+
+  let itemData = null;
+  let itemToDelete = null;
+
+  try {
+    showState("loading");
+    const response = await fetch(ITEM_ENDPOINT);
+    if (!response.ok) throw new Error("Failed to fetch item detail");
+    itemData = await response.json();
+    renderPageContent();
+    renderActionButtons();
+    showState("ready");
+  } catch (err) {
+    console.error("Error fetching item detail:", err);
+    showState("error");
+  }
+
+
+  function renderPageContent() {
+    itemTitle.textContent = itemData.name || "Untitled";
+    itemSeller.textContent = `Seller: ${itemData.user_username || "Anonymous"}`;
+    itemPrice.textContent = `$${itemData.price || 0}`;
+    itemDescription.textContent = itemData.description || "No description available.";
+
+    if (itemData.thumbnail_custom || itemData.thumbnail) {
+      itemImage.src = itemData.thumbnail_custom || itemData.thumbnail;
+      itemImage.classList.remove("hidden");
+      noImage.classList.add("hidden");
+    } else {
+      itemImage.classList.add("hidden");
+      noImage.classList.remove("hidden");
+    }
+
+    itemBadges.innerHTML = "";
+    if (itemData.category_display) {
+        const badge = createBadge(itemData.category_display, "bg-purple-100 text-purple-800");
+        itemBadges.appendChild(badge);
+    }
+    if (itemData.is_featured) {
+        const badge = createBadge("Featured", "bg-yellow-100 text-yellow-800");
+        itemBadges.appendChild(badge);
+    }
+    if (itemData.is_item_hot) {
+        const badge = createBadge("Hot", "bg-red-100 text-red-800");
+        itemBadges.appendChild(badge);
+    }
+  }
+
+  function renderActionButtons() {
+    actionButtonsContainer.innerHTML = '';
+    const isOwner = CURRENT_USER_ID && Number(itemData.user_id) === Number(CURRENT_USER_ID);
+    
+    if (CURRENT_USER_ID) {
+      const buyAction = isOwner ? () => alert('This is your own item!') : () => alert('Purchase functionality coming soon!');
+      const buyButton = createButton('Buy Now', 'bg-[#4b4197]', buyAction);
+      actionButtonsContainer.appendChild(buyButton);
+    } else {
+      const loginButton = createButton('Login to Buy', 'bg-[#4b4197]', () => window.location.href = "{% url 'main:login' %}");
+      actionButtonsContainer.appendChild(loginButton);
+    }
+
+    if (isOwner) {
+      const editUrl = EDIT_ITEM_URL_BASE.replace('00000000-0000-0000-0000-000000000000', itemData.id);
+      const editButton = createButton('Edit', 'bg-blue-600', () => { 
+        if (typeof showEditModal === 'function') showEditModal(itemData.id); 
+      });
+      const deleteButton = createButton('Delete', 'bg-red-600', () => showDeleteModal(itemData.id));
+      actionButtonsContainer.append(editButton, deleteButton);
+    }
+  }
+
+  function createButton(text, bgColor, onClickAction) {
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.className = `inline-block ${bgColor} text-white px-6 py-3 rounded-md font-medium transition-colors font-custom1`;
+    button.onclick = onClickAction;
+    return button;
+  }
+  
+  function createBadge(text, colorClass) {
+    const badge = document.createElement("span");
+    badge.className = `inline-flex items-center px-3 py-1 rounded-md text-sm font-medium font-custom1 ${colorClass}`;
+    badge.textContent = text;
+    return badge;
+  }
+
+  function showState(state) {
+    loadingState.classList.toggle("hidden", state !== "loading");
+    errorState.classList.toggle("hidden", state !== "error");
+    content.classList.toggle("hidden", state !== "ready");
+  }
+  
+  function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+
+  const deleteModal = document.getElementById('deleteModal');
+  const confirmDeleteBtn = document.getElementById('confirmDelete');
+  const cancelDeleteBtn = document.getElementById('cancelDelete');
+
+  function showDeleteModal(itemId) {
+    itemToDelete = itemId;
+    if (deleteModal) deleteModal.classList.remove('hidden');
+  }
+  function hideDeleteModal() {
+    itemToDelete = null;
+    if (deleteModal) deleteModal.classList.add('hidden');
+  }
+
+  if (cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', hideDeleteModal);
+  if (confirmDeleteBtn) {
+    confirmDeleteBtn.addEventListener('click', async () => {
+      if (!itemToDelete) return;
+      
+      const btnText = document.getElementById("delete-button-text");
+      const btnSpinner = document.getElementById("delete-button-spinner");
+      confirmDeleteBtn.disabled = true;
+      btnText.classList.add('hidden');
+      btnSpinner.classList.remove('hidden');
+
+      try {
+        const deleteUrl = DELETE_ITEM_ENDPOINT_BASE.replace('00000000-0000-0000-0000-000000000000', itemToDelete);
+        const response = await fetch(deleteUrl, {
+          method: "POST",
+          headers: { 'X-CSRFToken': getCookie('csrftoken') }
+        });
+
+        if (response.ok) {
+          if(typeof showToast === 'function') showToast('Item deleted successfully!', '', 'success');
+          setTimeout(() => {
+            window.location.href = "{% url 'main:show_main' %}";
+          }, 1500);
+        } else {
+          throw new Error('Failed to delete item.');
+        }
+      } catch (error) {
+        console.error("Error deleting item:", error);
+        if(typeof showToast === 'function') showToast('An error occurred.', 'Please try again.', 'error');
+        hideDeleteModal();
+      } finally {
+        confirmDeleteBtn.disabled = false;
+        btnText.classList.remove('hidden');
+        btnSpinner.classList.add('hidden');
+      }
+    });
+  }
+  
+  window.showDeleteModal = showDeleteModal;
+});
+</script>
+{% endblock script %}
+
 {% endblock content %}

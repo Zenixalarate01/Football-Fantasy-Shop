@@ -1,0 +1,193 @@
+<!-- Edit Modal -->
+<div id="editModal" class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-gray-800 bg-opacity-50">
+  <div id="editModalContent" class="rounded-2xl border border-gray-200 p-8 sm:p-10 form-style font-custom1 bg-[#f1e6ff]/80 shadow-2xl relative z-10 w-[90%] max-w-4xl transform transition-all duration-200 scale-95 opacity-0">
+
+    <!-- Modal header -->
+    <div class="flex items-center justify-between p-1 border-b border-gray-300">
+      <div>
+        <h3 class="text-xl font-custom1 text-gray-900">Edit Item</h3>
+        <p class="text-sm font-custom1 text-gray-600 mt-1">Update your item information</p>
+      </div>
+      <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" onclick="hideEditModal()">
+        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+        </svg>
+        <span class="sr-only">Close modal</span>
+      </button>
+    </div>
+
+    <!-- Modal body -->
+    <form id="editItemForm" class="px-6 py-4 space-y-3 form-style">
+      <input type="hidden" id="edit_item_id" name="item_id">
+      
+      <div class="mb-1">
+        <label for="edit_title" class="block text-sm font-custom1 text-gray-700">Title</label>
+        <input type="text" id="edit_title" name="title" class="font-custom1 mt-1 block w-full border border-gray-300 rounded-md px-3 py-2" placeholder="Enter item title" required>
+      </div>
+      
+      <div class="mb-1">
+        <label for="edit_price" class="block text-sm font-custom1 text-gray-700">Price</label>
+        <input type="number" id="edit_price" name="price" class="font-custom1 mt-1 block w-full border border-gray-300 rounded-md px-3 py-2" placeholder="Enter item price" min="0" required>
+      </div>
+
+      <div class="mb-1">
+        <label for="edit_content" class="block text-sm font-custom1 text-gray-700">Description</label>
+        <textarea id="edit_content" name="content" rows="3" class="font-custom1 mt-1 block w-full border border-gray-300 rounded-md px-3 py-2" placeholder="Enter item description" required></textarea>
+      </div>
+
+      <div class="mb-1">
+        <label for="edit_category" class="block text-sm text-gray-700 font-custom1">Category</label>
+        <select id="edit_category" name="category" class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 font-custom1" required>
+          <option value="">Choose a category</option>
+          <option value="clothing">Clothing</option>
+          <option value="accessories">Accessories</option>
+          <option value="shoes">Shoes</option>
+          <option value="skills">Skills</option>
+          <option value="superDuperUltraRareUnique item">SuperDuperUltraRareUnique Item</option>
+          <option value="equipment">Equipment</option>
+          <option value="consumables">Consumables</option>
+        </select>
+      </div>
+
+      <div class="mb-1">
+        <label for="edit_thumbnail" class="block text-sm font-medium text-gray-700">Thumbnail URL</label>
+        <input type="url" id="edit_thumbnail" name="thumbnail" class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2" placeholder="https://example.com/image.jpg">
+      </div>
+
+      <div class="mb-1">
+        <label for="edit_thumbnail_custom" class="block text-sm font-medium text-gray-700">Upload Thumbnail</label>
+        <input type="file" id="edit_thumbnail_custom" name="thumbnail_custom" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#f1e6ff]/80 file:text-[#892e9e] hover:file:bg-[#c98ae2]">
+        <p class="mt-1 text-xs text-gray-500">Leave empty to keep current thumbnail</p>
+      </div>
+
+      <div class="mb-1">
+        <div class="flex items-center">
+          <input id="edit_is_featured" name="is_featured" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+          <label for="edit_is_featured" class="ml-2 text-sm font-custom1 text-gray-900">Featured Item</label>
+        </div>
+      </div>
+    </form>
+
+    <!-- Modal footer -->
+    <div class="flex flex-col sm:flex-row gap-2 p-1 border-t border-gray-200 rounded-b">
+      <button type="button" class="order-2 sm:order-1 px-6 py-3 border border-gray-300 text-white rounded-md font-medium bg-red-600 hover:bg-red-700 transition-colors text-center" onclick="hideEditModal()">Cancel</button>
+      <button type="submit" form="editItemForm" class="order-1 sm:order-2 flex-1 bg-[#53499a] text-white px-6 py-3 rounded-md font-medium hover:bg-[#4b4197] transition-colors">Update Item</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+    function showEditModal(itemId) {
+        const modal = document.getElementById('editModal');
+        const modalContent = document.getElementById('editModalContent');
+        
+        fetch(`{% url 'main:show_json_by_id' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', itemId))
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('edit_item_id').value = data.id;
+                document.getElementById('edit_title').value = data.name;
+                document.getElementById('edit_price').value = data.price;
+                document.getElementById('edit_content').value = data.description;
+                document.getElementById('edit_category').value = data.category;
+                document.getElementById('edit_thumbnail').value = data.thumbnail || '';
+                document.getElementById('edit_is_featured').checked = data.is_featured;
+                
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modalContent.classList.remove('opacity-0', 'scale-95');
+                    modalContent.classList.add('opacity-100', 'scale-100');
+                }, 50);
+            })
+            .catch(error => {
+                console.error('Error fetching item data:', error);
+                if (typeof showToast === 'function') {
+                    showToast('Failed to load item data', '', 'error');
+                }
+            });
+    }
+
+    function hideEditModal() {
+        const modal = document.getElementById('editModal');
+        const modalContent = document.getElementById('editModalContent');
+        modalContent.classList.remove('opacity-100', 'scale-100');
+        modalContent.classList.add('opacity-0', 'scale-95');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            document.getElementById('editItemForm').reset();
+        }, 150);
+    }
+  
+    async function updateItemEntry() {
+        const itemId = document.getElementById('edit_item_id').value;
+        const updateUrl = `{% url 'main:update_item_ajax' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', itemId);
+        
+        console.log('Updating item:', itemId);
+        console.log('Update URL:', updateUrl);
+        
+        const formData = new FormData(document.querySelector('#editItemForm'));
+        
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+        
+        try {
+            const response = await fetch(updateUrl, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            });
+
+            const result = await response.json();
+            
+            if (response.ok && result.status === 'success') {
+                hideEditModal(); // Sembunyikan modalnya
+                
+                if (typeof showToast === 'function') {
+                    showToast('Item updated successfully!', '', 'success');
+                }
+
+                // Tunggu 1.5 detik (agar notifikasi terlihat), lalu reload halaman
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500); 
+            } else {
+                console.error('Error response from server:', result);
+                if (typeof showToast === 'function') {
+                    showToast(result.message || 'Error updating item', '', 'error');
+                }
+            }
+        } catch (error) {
+            console.error('Error updating item:', error);
+            if (typeof showToast === 'function') {
+                showToast('Error updating item', '', 'error');
+            }
+        }
+
+        return false;
+    }
+  
+    document.getElementById('editItemForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        updateItemEntry();
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    window.showEditModal = showEditModal;
+</script>

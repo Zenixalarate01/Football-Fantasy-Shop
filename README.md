@@ -199,3 +199,40 @@ Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-b
 *** Kustomisasi halaman daftar product menjadi lebih menarik dan responsive dan perhatikan kondisi -DONE ***
 ***  Untuk setiap card product, buatlah dua buah button untuk mengedit dan menghapus product pada card tersebut! -DONE ***
 *** Buatlah navigation bar (navbar) untuk fitur-fitur pada aplikasi yang responsive terhadap perbedaan ukuran device, khususnya mobile dan desktop. -DONE ***
+
+Tugas 6
+
+Apa perbedaan antara synchronous request dan asynchronous request?
+- Synchronus request merupakan request yang memblokir eksekusi kode sampai server merespons sedangkan asynchronus request merupakan request yang tidak memblokir eksekusi kode sehingga browser tetap bisa melakukan hal lain saat menunggu respons
+
+- Synchronous request akan membuat halaman membeku atau loading sampai respons diterima sedangkan asynchronus request membuat halaman tetap interaktif dan respons akan diproses ketika siap
+
+- Synchronous request lebih mudah dipahami sedangkan asynchronus request membuat pengalaman pengguna lebih lancar, bisa update sebagian halaman tanpa reload penuh
+
+- Synchronous request ketika melakukan submit form biasa akan meminta seperti: (<form method="POST">) sedangkan asynchronus request seperti AJAX akan meminta seperti ini (fetch / XMLHttpRequest)
+
+Bagaimana AJAX bekerja di Django (alur request–response)?
+Pertama pengguna melakukan aksi, misal klik tombol "Login" lalu javascript membuat request ke server misal menggunakan fetch tanpa reload halaman. Setelah itu request dikirim ke URL tertentu, diproses oleh views yang akan diterima oleh Django. Jika data valid, melakukan proses login user. Setelah itu akan mengembalikan JSON Response atau status tertentu, hal tersebut akan memberikan javascript respons yang akan melakukan update UI secara dinamis, misal menampilkan pesan sukses/gagal, mengganti tampilan, dll.
+
+Apa keuntungan menggunakan AJAX dibandingkan render biasa di Django?
+- Tidak perlu reload halaman penuh sehingga lebih cepat dan efisien
+- User Experience lebih baik yang memberikan interaksi lebih smooth dan responsif
+- Mengupdate konten spesifik saja misalnya hanya card item yang ada di halaman utama
+- Mengurangi beban server karnea hanya data yang dikirim, bukan seluruh halaman HTML
+- Memungkinkan interaktivitas kompleks misalnya real-time search, live update, infinite scroll
+
+Bagaimana cara memastikan keamanan saat menggunakan AJAX untuk fitur Login dan Register di Django?
+ada beberapa cara untuk memastikan keamanan seperti:
+- Menggunakan CSRF Token
+- Validasi Data di Server
+- Gunakan HTTPS
+- Menghinndari menunjukkan Data Sensitif
+- Membatasi percobaan login berulang
+
+Bagaimana AJAX mempengaruhi pengalaman pengguna (User Experience) pada website?
+Ajax dapat mempengaruhi banyak hal untuk user experience di website seperti:
+- Responsif dan Cepat sehingga pengguna tidak menunggu halaman reload penuh
+- Pengguna dapat melakukan aksi real-time search, filtering, live chat
+- Dapat memberikan feedback instan seperti form login/register yang memeberikan pesan error 
+- Mengurangi frustasi pengguna karena tetap di halaman dan melihat perubahan tanpa interupsi
+- Memiliki loading konten yang dinamis sehingga dapat menampilkan konten baru tanpa kehilangan state halaman sebelumnya

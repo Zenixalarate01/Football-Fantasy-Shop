@@ -10,7 +10,9 @@ class Product(models.Model):
         ('accessories', 'Accessories'),
         ('shoes', 'Shoes'),
         ('skills', 'Skills'),
-        ('superDuperUltraRareUnique Item', 'SuperDuperUltraRareUnique Item'),
+        ('superDuperUltraRareUnique item', 'SuperDuperUltraRareUnique Item'),
+        ('equipment', 'Equipment'),
+        ('consumables', 'Consumables'),
     ]
     
     id = models.CharField(max_length=100, primary_key=True, default=uuid.uuid4, editable=False)
@@ -31,7 +33,7 @@ class Product(models.Model):
 
     @property
     def is_item_hot(self):
-        return self.item_views > 20
+        return self.item_views > 10
             
     def increment_views(self):
         self.item_views += 1
