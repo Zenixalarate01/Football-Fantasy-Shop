@@ -47,24 +47,21 @@
 }
 
 @font-face {
-    font-family: 'Custom_1';
-    src: url('/static/fonts/LowresPixel.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Custom_1';
+  src: url('../fonts/LowresPixel.otf') format('opentype');
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Custom_2';
-    src: url('/static/fonts/ByteBounce.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-size: 20;
+  font-family: 'Custom_2';
+  src: url('../fonts/ByteBounce.ttf') format('truetype');
+  font-display: swap;
 }
 
 .font-custom1 {
-    font-family: 'Custom_1', sans-serif;
+  font-family: 'Custom_1', sans-serif;
 }
 
 .font-byte {
-    font-family: 'Custom_2', sans-serif;
+  font-family: 'Custom_2', sans-serif;
 }

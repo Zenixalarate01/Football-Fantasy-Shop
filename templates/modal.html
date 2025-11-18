@@ -107,7 +107,6 @@
         // Show toast notification
         showToast('Item added successfully!', '', 'success');
 
-        // Dispatch custom event to notify main.html about new data
         document.dispatchEvent(new CustomEvent('itemAdded'));
 
         return false;

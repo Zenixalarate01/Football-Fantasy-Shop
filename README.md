@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Tugas 1
 
 Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step
@@ -237,7 +236,3 @@ Ajax dapat mempengaruhi banyak hal untuk user experience di website seperti:
 - Dapat memberikan feedback instan seperti form login/register yang memeberikan pesan error 
 - Mengurangi frustasi pengguna karena tetap di halaman dan melihat perubahan tanpa interupsi
 - Memiliki loading konten yang dinamis sehingga dapat menampilkan konten baru tanpa kehilangan state halaman sebelumnya
-=======
-# Football-Fantasy-Shop
-Tugas untuk PBP
->>>>>>> c4ccda394dfa6382f582cd0c707a4ed270822854

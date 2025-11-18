@@ -95,8 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
         successMessageDiv.classList.add('hidden');
 
         const formData = new FormData(registerForm);
-        
-        // === PERBAIKAN 2: 'key' dan 'get' diubah menjadi 'password1' ===
         const data = {
             username: formData.get('username'),
             password1: formData.get('password1'), // Diambil dari name="password1"
@@ -136,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (error) {
             console.error('Registration request failed:', error);
-            // ... (logika error jaringan)
         } finally {
             if (!submitButton.disabled || !window.location.href.includes('redirecting')) {
                 buttonText.textContent = 'Create Account';
