@@ -2,7 +2,7 @@ from django.urls import path
 from main.views import show_main, create_item, show_items, show_xml, show_json, show_xml_by_id, show_json_by_id
 from main.views import register, login_user, logout_user
 from main.views import edit_item, delete_item, add_item_ajax, login_ajax, register_ajax, update_item_ajax
-
+from main.views import proxy_image, create_item_flutter
 app_name = 'main'
 
 urlpatterns = [
@@ -22,4 +22,6 @@ urlpatterns = [
     path('login-ajax/', login_ajax, name='login_ajax'),
     path('register-ajax/', register_ajax, name='register_ajax'),
     path('update-item-ajax/<str:id>/', update_item_ajax, name='update_item_ajax'),
+    path('proxy-image/', proxy_image, name='proxy_image'),
+    path('create-flutter/', create_item_flutter, name='create_item_flutter'),
 ]
